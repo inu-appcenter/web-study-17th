@@ -23,7 +23,7 @@ const Book = () => {
   const NaverClientSecret = import.meta.env.VITE_NAVERAPI_CLIENT_SECRET;
 
   const handleToBookCart = () => {
-    navigate("/bookcart", { state: { books } });
+    navigate("/bookcart");
   };
 
   // 책 추가 버튼 클릭 시 localStorage에 책 정보를 저장하는 함수
@@ -51,12 +51,12 @@ const Book = () => {
         },
       });
       setBooks(response.data.items);
-      console.log(response.data.items);
     } catch (error) {
       console.error(
         "빈 값을 보내거나 뭔가 잘못된 요청 : toast처리 해보자",
         error
       );
+      toast.error("책을 찾을 수 없습니다.", { position: "top-center" });
     }
   };
 

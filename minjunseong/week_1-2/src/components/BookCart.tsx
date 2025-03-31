@@ -21,7 +21,7 @@ interface BookType {
 // 하단 viewer
 // 위 두개를 적절한 배치
 
-const BookCart = (books: object) => {
+const BookCart = () => {
   const navigate = useNavigate();
 
   const handleToBookSelect = () => {
@@ -29,20 +29,27 @@ const BookCart = (books: object) => {
   };
 
   const [savedBooks, setSavedBooks] = useState<BookType[]>([]);
-
   useEffect(() => {
     const data = JSON.parse(localStorage.getItem("myLibrary") || "[]");
     setSavedBooks(data);
   }, []);
+
   return (
     <ViewContainer>
       <HeaderBar>
-        <button onClick={handleToBookSelect}>
-          <FaHome />
-        </button>
+        <HomeButton onClick={handleToBookSelect}>
+          <FaHome size="20" />
+        </HomeButton>
         <TitleLabel>내 서재</TitleLabel>
       </HeaderBar>
-      <BookCartViewer>test</BookCartViewer>
+      <BookCartViewer>
+        {savedBooks.map((book, index) => (
+          <BookItem key={index}>
+            <BookImage src={book.image} alt={book.title} />
+            <BookTitle>{book.title}</BookTitle>
+          </BookItem>
+        ))}
+      </BookCartViewer>
     </ViewContainer>
   );
 };
@@ -59,6 +66,7 @@ const ViewContainer = styled.div`
   height: 100vh;
 `;
 
+// 헤더영역
 const HeaderBar = styled.div`
   width: 900px;
   display: flex;
@@ -68,8 +76,32 @@ const HeaderBar = styled.div`
   padding: 20px;
 `;
 
+// 좌측 홈버튼
+const HomeButton = styled.button`
+  width: 50px;
+  height: 50px;
+  border-radius: 30px;
+  border: none;
+  background-color: #d9d9d9;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  &:hover {
+    background-color: #cbcbcb;
+  }
+`;
+
+// 우측 라벨
 const TitleLabel = styled.div`
-  font-size: 30px;
+  width: 400px;
+  height: 50px;
+  background-color: #d9d9d9;
+  display: flex;
+  border-radius: 30px;
+  justify-content: center;
+  align-items: center;
+  font-size: 22px;
   font-weight: 600;
 `;
 
@@ -83,6 +115,35 @@ const BookCartViewer = styled.div`
   height: 700px;
   border-radius: 30px;
   background-color: #d9d9d9;
+`;
+
+const BookItem = styled.div`
+  width: 180px;
+  height: 270px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-radius: 30px;
+  background-color: white;
+  shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  padding: 10px;
+  margin: 10px;
+`;
+
+const BookImage = styled.img`
+  max-width: 50px;
+  max-height: 50px;
+`;
+
+const BookTitle = styled.h3`
+  font-size: 16px;
+  font-weight: bold;
+  text-align: center;
+  max-width: 50px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `;
 
 export default BookCart;
