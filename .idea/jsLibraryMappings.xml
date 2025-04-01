@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="JavaScriptLibraryMappings">
+    <excludedPredefinedLibrary name="web-study-17th/week1/hyunji/hyunjina/node_modules" />
+    <excludedPredefinedLibrary name="web-study-17th/week1/hyunji/hyunjina/week1-2/node_modules" />
+    <excludedPredefinedLibrary name="web-study-17th/week1/jayeon/jayeon/week1-2/node_modules" />
+    <excludedPredefinedLibrary name="web-study-17th/week1/minjun/minjunseong/week_1-2/node_modules" />
+    <excludedPredefinedLibrary name="web-study-17th/week1/sua/sua/week1-2/node_modules" />
+  </component>
+</project>

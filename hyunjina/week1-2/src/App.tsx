@@ -18,12 +18,13 @@ type RawItem = {
   poster: string[];
 };
 
+const SERVICE_KEY = import.meta.env.VITE_SERVICE_KEY;
+
 function App() {
   const [shows, setShows] = useState<ShowItem[]>([]);
 
   useEffect(() => {
     const fetchData = async () => {
-      const SERVICE_KEY = "1adb8ca5-cc8b-4687-a614-177f3a3b914b";
       const API_URL = `http://www.kopis.or.kr/openApi/restful/pblprfr?service=${SERVICE_KEY}&stdate=20240101&eddate=20241231&cpage=1&rows=5`;
 
       try {
@@ -50,14 +51,14 @@ function App() {
 
   return (
     <div style={{ padding: "20px" }}>
-      <h1> 공연 목록</h1>
+      <h1>🎭 공연 목록</h1>
       {shows.map((show, idx) => (
         <div key={idx} style={{ marginBottom: "20px" }}>
           <img src={show.poster} alt={show.prfnm} style={{ width: "150px" }} />
           <h2>{show.prfnm}</h2>
-          <p> 장소: {show.fcltynm}</p>
+          <p>📍 장소: {show.fcltynm}</p>
           <p>
-            기간: {show.prfpdfrom} ~ {show.prfpdto}
+            🗓️ 기간: {show.prfpdfrom} ~ {show.prfpdto}
           </p>
         </div>
       ))}
