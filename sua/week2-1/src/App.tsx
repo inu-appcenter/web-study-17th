@@ -1,35 +1,26 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import React, { useEffect } from "react";
+import { generateSignature } from "./utils/signature";
 
-function App() {
-  const [count, setCount] = useState(0)
+const App: React.FC = () => {
+  useEffect(() => {
+    const method = "GET";
+    const url = "/v1/search/parking?query=서울"; // 예제 URL (실제 API에 맞게 수정)
+    const timestamp = String(Date.now()); // 현재 타임스탬프 (밀리초)
+    const accessKey = import.meta.env.VITE_NAVER_ACCESS_KEY || "";
+    const secretKey = import.meta.env.VITE_NAVER_SECRET_KEY || "";
 
-  return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
-}
+    if (!accessKey || !secretKey) {
+      console.error("API 키가 설정되지 않았습니다!");
+      return;
+    }
 
-export default App
+    const signature = generateSignature(method, url, timestamp, accessKey, secretKey);
+    console.log("생성된 Signature:", signature);
+  }, []);
+
+  console.log("네이버 지도 API 키:", import.meta.env.VITE_NAVER_ACCESS_KEY);
+
+  return <div>네이버 API 테스트</div>;
+};
+
+export default App;
