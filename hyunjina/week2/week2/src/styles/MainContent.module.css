@@ -1,0 +1,18 @@
+.main-container {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 40px;
+  margin-top: 40px;
+  padding: 0 20px;
+  flex-wrap: wrap;
+}
+.main-left {
+  flex: 1;
+  min-width: 300px;
+}
+
+.main-right {
+  flex: 1;
+  min-width: 300px;
+}
