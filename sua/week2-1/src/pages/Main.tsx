@@ -7,7 +7,10 @@ import BestProductSection from '../components/sections/BestProductSection';
 function Main() {
   return (
     <div>
-      <FirstSection></FirstSection>
+      <FirstSection />
+      <NewProductSection />
+      <BestProductSection />
+      <Footer />
     </div>
   );
 }

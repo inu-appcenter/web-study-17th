@@ -1,7 +1,5 @@
 import styled from 'styled-components';
 import DropdownMenu from './DropdownMenu';
-import BasketButton from './BasketButton';
-
 
 function Header() {
   return (
