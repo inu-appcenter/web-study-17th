@@ -1,21 +1,23 @@
-export async function searchDocuments(query: string) {
-  const clientId = import.meta.env.VITE_NAVER_CLIENT_ID;
-  const clientSecret = import.meta.env.VITE_NAVER_CLIENT_SECRET;
+import axios from "axios";
 
-  const response = await fetch(
-    `/v1/search/doc.json?query=${encodeURIComponent(query)}`,
-    {
-      method: "GET",
-      headers: {
-        "X-Naver-Client-Id": clientId,
-        "X-Naver-Client-Secret": clientSecret,
-      },
-    }
-  );
+export const searchDocuments = async (query: string) => {
+  try {
+    const params = new URLSearchParams({
+      query: query,
+    });
 
-  if (!response.ok) {
-    throw new Error(`검색 실패: ${response.status}`);
+    const response = await axios.get(
+      `/v1/search/doc.json?${params.toString()}`,
+      {
+        headers: {
+          "X-Naver-Client-Id": import.meta.env.VITE_NAVER_CLIENT_ID,
+          "X-Naver-Client-Secret": import.meta.env.VITE_NAVER_CLIENT_SECRET,
+        },
+      }
+    );
+
+    return response.data;
+  } catch (error) {
+    throw new Error("검색 실패: " + error);
   }
-
-  return await response.json();
-}
+};

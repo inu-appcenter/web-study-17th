@@ -1,4 +1,5 @@
 import { useState } from "react";
+import styles from "../styles/SearchBar.module.css";
 
 interface SearchBarProps {
   onSearch: (query: string) => void;
@@ -17,14 +18,17 @@ const SearchBar = ({ onSearch }: SearchBarProps) => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} className={styles.searchContainer}>
       <input
         type="text"
         placeholder="검색어를 입력하세요"
         value={query}
         onChange={(e) => setQuery(e.target.value)}
+        className={styles.searchInput}
       />
-      <button type="submit">검색</button>
+      <button type="submit" className={styles.searchBtn}>
+        검색
+      </button>
     </form>
   );
 };

@@ -1,5 +1,11 @@
 export interface DocumentItem {
   title: string;
-  link: string;
   description: string;
+  link: string;
+  pubDate?: string;
+  author?: string;
+  publisher?: string;
+  isbn?: string;
+  category?: string;
+  format?: string;
 }

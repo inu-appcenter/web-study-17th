@@ -1,20 +1,22 @@
+// 검색결과 리스트
+import React from "react";
 import { DocumentItem } from "../types";
 
-interface ResultsProps {
+interface Props {
   items: DocumentItem[];
-  onItemClick: (item: DocumentItem) => void;
+  onClick: (item: DocumentItem) => void;
 }
 
-const Results = ({ items, onItemClick }: ResultsProps) => {
+const Results = ({ items, onClick }: Props) => {
   return (
     <ul>
       {items.map((item, index) => (
         <li
           key={index}
-          onClick={() => onItemClick(item)}
-          style={{ cursor: "pointer" }}
+          onClick={() => onClick(item)}
+          style={{ cursor: "pointer", marginBottom: "10px" }}
         >
-          <strong dangerouslySetInnerHTML={{ __html: item.title }}></strong>
+          <span dangerouslySetInnerHTML={{ __html: item.title }} />
         </li>
       ))}
     </ul>
