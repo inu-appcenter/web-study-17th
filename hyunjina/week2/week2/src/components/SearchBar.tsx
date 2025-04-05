@@ -9,6 +9,10 @@ const SearchBar = ({ onSearch }: SearchBarProps) => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    if (query.trim() === "") {
+      alert("내용을 입력해주세요!");
+      return;
+    }
     onSearch(query);
   };
 
