@@ -1,13 +1,13 @@
-import Header from '../components/Header';
-import Body from '../components/Body';
+
 import Footer from '../components/Footer';
+import FirstSection from '../components/sections/FirstSection';
+import NewProductSection from '../components/sections/NewProductSection';
+import BestProductSection from '../components/sections/BestProductSection';
 
 function Main() {
   return (
     <div>
-      <Header />
-      <Body />
-      <Footer />
+      <FirstSection></FirstSection>
     </div>
   );
 }

@@ -1,4 +1,4 @@
-function Screen() {
+function Body() {
     return (
       <main>
         <h2>인기 상품</h2>
@@ -9,5 +9,5 @@ function Screen() {
     );
   }
   
-  export default Screen;
+export default Body;
   

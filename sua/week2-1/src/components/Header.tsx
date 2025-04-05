@@ -1,29 +1,29 @@
 import styled from 'styled-components';
 import DropdownMenu from './DropdownMenu';
-import LoginButton from './LoginButton';
 import BasketButton from './BasketButton';
 
 
 function Header() {
-    return (
-      <HeaderWrapper>
-        <Logo>유니 기념품 상점</Logo>
-        <NavContainer>
-            <NavMenu>
+  return (
+    <HeaderWrapper>
+      <Logo>유니 기념품 상점</Logo>
+      <NavContainer>
+        <NavMenu>
             <DropdownMenu title="new" items={[]} />
             <DropdownMenu title="best" items={['best', 'sale']} />
             <DropdownMenu title="all" items={['문구', '인형', '학생작품', '리빙']} />
             <DropdownMenu title="catering" items={['케이터링 문의', '음료', '샌드위치', '베이커리']} />
-            </NavMenu>
-        </NavContainer>
+        </NavMenu>
+      </NavContainer>
 
-        <ActionContainer>
-            <LoginButton />
-            <BasketButton />
-        </ActionContainer>
-        </HeaderWrapper>
-    );
-  }
+      <ActionContainer>
+
+      </ActionContainer>
+    </HeaderWrapper>
+  );
+}
+
+export default Header;
 
 const NavContainer = styled.div`
   position: absolute;
@@ -37,7 +37,7 @@ const ActionContainer = styled.div`
 `;
 
   
-  const HeaderWrapper = styled.header`
+const HeaderWrapper = styled.header`
   position: fixed;
   top: 0;
   width: 100%;
@@ -50,6 +50,7 @@ const ActionContainer = styled.div`
   justify-content: space-between;
   padding: 0 40px;
 `;
+
 
 const Logo = styled.h1`
   font-size: 20px;
@@ -64,5 +65,5 @@ const NavMenu = styled.ul`
   padding: 0;
 `;
   
-  export default Header;
+
   
