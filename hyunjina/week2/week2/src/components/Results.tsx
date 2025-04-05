@@ -2,18 +2,19 @@ import { DocumentItem } from "../types";
 
 interface ResultsProps {
   items: DocumentItem[];
+  onItemClick: (item: DocumentItem) => void;
 }
 
-const Results = ({ items }: ResultsProps) => {
+const Results = ({ items, onItemClick }: ResultsProps) => {
   return (
     <ul>
       {items.map((item, index) => (
-        <li key={index}>
-          <h3 dangerouslySetInnerHTML={{ __html: item.title }} />
-          <p dangerouslySetInnerHTML={{ __html: item.description }} />
-          <a href={item.link} target="_blank" rel="noopener noreferrer">
-            전문 보기
-          </a>
+        <li
+          key={index}
+          onClick={() => onItemClick(item)}
+          style={{ cursor: "pointer" }}
+        >
+          <strong dangerouslySetInnerHTML={{ __html: item.title }}></strong>
         </li>
       ))}
     </ul>

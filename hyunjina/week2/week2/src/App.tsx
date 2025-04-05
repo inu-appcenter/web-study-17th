@@ -1,26 +1,35 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import SearchBar from "./components/SearchBar";
 import Results from "./components/Results";
-import { searchDocuments } from "./api/search";
+import DocumentDetail from "./components/DocumentDetail";
 import { DocumentItem } from "./types";
+import { searchDocuments } from "./api/search";
 
 const App = () => {
   const [results, setResults] = useState<DocumentItem[]>([]);
+  const [selectedItem, setSelectedItem] = useState<DocumentItem | null>(null);
 
   const handleSearch = async (query: string) => {
     try {
       const data = await searchDocuments(query);
       setResults(data.items || []);
+      setSelectedItem(null); // 검색하면 상세보기 초기화
     } catch (error) {
-      console.error("검색 중 오류 발생:", error);
+      console.error("검색 오류:", error);
     }
   };
 
   return (
     <div>
-      <h1>네이버 전문자료 검색</h1>
       <SearchBar onSearch={handleSearch} />
-      <Results items={results} />
+      {selectedItem ? (
+        <DocumentDetail
+          item={selectedItem}
+          onBack={() => setSelectedItem(null)}
+        />
+      ) : (
+        <Results items={results} onItemClick={setSelectedItem} />
+      )}
     </div>
   );
 };
