@@ -1,6 +1,6 @@
 import backgroundImage from '../../assets/image2.png';
 
-function FirstSection() {
+const FirstSection= () =>{
   return (
     //img만 하는 것보다 div에서 하는 게 낫다.
     <div

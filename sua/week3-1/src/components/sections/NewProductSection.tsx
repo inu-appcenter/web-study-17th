@@ -6,7 +6,7 @@ const products = [
   { image: '/productimg/graduate.png', name: '졸축', price: '7,000원' },
 ];
 
-function NewProductSection() {
+const NewProductSection = ()=> {
   return (
     <Wrapper>
       <Title>신규 상품</Title>

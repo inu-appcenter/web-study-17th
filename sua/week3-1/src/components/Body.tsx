@@ -1,4 +1,4 @@
-function Body() {
+const Body = () => {
     return (
       <main>
         <h2>인기 상품</h2>

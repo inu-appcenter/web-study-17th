@@ -7,7 +7,7 @@ function Header() {
     <HeaderWrapper>
       
       <LeftContainer>
-        <Logo><StyledLink to="/">유니기념품상점</StyledLink></Logo>
+        <Logo to="/">유니 기념품 상점</Logo>
       </LeftContainer>
 
       <NavContainer>
@@ -63,9 +63,18 @@ const LeftContainer = styled.div`
   flex: 0 0 auto; // 고정 크기 (logo는 크기 변화 없음)
 `;
 
-const Logo = styled.h1`
+const Logo = styled(Link)`
   font-size: 20px;
   font-weight: bold;
+  /*버튼같이 안보이게*/
+  text-decoration: none;  /* 밑줄 없애기 */
+  color: inherit;          /* 부모 색상 그대로 */
+
+  /* 이거 없으면 마우스 올릴 시, 브라우저 기본 스타일인 파란색으로 글씨 변함*/
+  &:hover {
+  transform: scale(1.5);
+}
+
 `;
 
 const NavMenu = styled.ul`

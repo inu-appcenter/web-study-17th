@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-function ProductCard({ image, name, price }: ProductCardProps) {
+const ProductCard = ({ image, name, price }: ProductCardProps)=> {
   return (
     <Card>
       <Image src={image} alt={name} />
