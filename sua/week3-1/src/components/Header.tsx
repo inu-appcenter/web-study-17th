@@ -1,10 +1,15 @@
 import styled from 'styled-components';
 import DropdownMenu from './DropdownMenu';
+import { Link } from 'react-router-dom'
 
 function Header() {
   return (
     <HeaderWrapper>
-      <Logo>유니 기념품 상점</Logo>
+      
+      <LeftContainer>
+        <Logo><StyledLink to="/">유니기념품상점</StyledLink></Logo>
+      </LeftContainer>
+
       <NavContainer>
         <NavMenu>
             <DropdownMenu title="new" items={[]} />
@@ -14,25 +19,16 @@ function Header() {
         </NavMenu>
       </NavContainer>
 
-      <ActionContainer>
+      <RightContainer>
+        <StyledLink to="/basket">장바구니</StyledLink>
+        <StyledLink to="/login">로그인</StyledLink>
+      </RightContainer>
 
-      </ActionContainer>
     </HeaderWrapper>
   );
 }
 
 export default Header;
-
-const NavContainer = styled.div`
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-`;
-
-const ActionContainer = styled.div`
-  display: flex;
-  gap: 20px;
-`;
 
   
 const HeaderWrapper = styled.header`
@@ -43,12 +39,29 @@ const HeaderWrapper = styled.header`
   background-color: #fff;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   z-index: 1000;
+
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: space-between; /* 양끝 정렬 이걸 해줘야 밖으로 안 삐져나가는듯.*/
   padding: 0 40px;
+  box-sizing: border-box;
 `;
 
+const NavContainer = styled.div`
+  flex: 1 1 auto; //가운데 메뉴 남는 공간 모두 차지
+  display: flex;
+  justify-content: center; 
+`;
+
+const RightContainer = styled.div`
+  flex: 0 0 auto;
+  display: flex;
+  gap: 20px;
+`;
+
+const LeftContainer = styled.div`
+  flex: 0 0 auto; // 고정 크기 (logo는 크기 변화 없음)
+`;
 
 const Logo = styled.h1`
   font-size: 20px;
@@ -63,5 +76,16 @@ const NavMenu = styled.ul`
   padding: 0;
 `;
   
+const StyledLink = styled(Link)`
+  text-decoration: none;
+  color: #333;
+  font-size: 16px;
+  font-weight: 500;
+  padding: 8px 12px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
 
-  
+  &:hover {
+    background-color: #f0f0f0;
+  }
+`;
