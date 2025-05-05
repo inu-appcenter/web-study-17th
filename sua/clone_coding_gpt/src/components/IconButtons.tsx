@@ -3,10 +3,11 @@ import styled from "styled-components";
 import { AnimatePresence } from "framer-motion";
 
 type IconButtonProps = {
-  icon: React.ReactNode;
+  icon?: React.ReactNode;
   label?: string;
   tooltip?: string;
   borderless?: boolean;
+  onClick?: () => void;
 };
 
 //위치 고정 해제, 콘텐츠 따라 버튼 크기조정, 세로방향중앙 정렬 
@@ -90,7 +91,7 @@ const TooltipBox = styled.div`
   }
 `;
 
-const IconButton = ({ icon, label, borderless, tooltip }: IconButtonProps) =>  {
+const IconButton = ({ icon, label, borderless, tooltip, onClick }: IconButtonProps) =>  {
   const [hovered, setHovered] = useState(false);    //hover 상태 파악
   const showTooltip = hovered && tooltip;           //hover에 따른 설명 말풍선 나타냄 여부
 
@@ -101,8 +102,9 @@ const IconButton = ({ icon, label, borderless, tooltip }: IconButtonProps) =>  {
         borderless={borderless}
         onMouseEnter={() => setHovered(true)}
         onMouseLeave={() => setHovered(false)}
+        onClick={onClick}
       >
-        <IconContainer hasLabel={!!label}>{icon}</IconContainer>
+        {icon && <IconContainer hasLabel={!!label}>{icon}</IconContainer>}
         {label && <Label>{label}</Label>}
       </StyledButton>
 
