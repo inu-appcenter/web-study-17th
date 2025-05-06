@@ -1,19 +1,17 @@
 // Header.tsx
 import React from 'react';
 import styled from 'styled-components';
-import { PanelLeft, SquarePen, MessageCircleDashed } from 'lucide-react';
+import { PanelLeft, SquarePen, MessageCircleDashed, Smile } from 'lucide-react';
 import { NewNote } from '../interface';
 import ButtonGroup from './ButtonGroup';
 
 const HeaderWrapper = styled.header`
   position: fixed;
   top: 0;
-  left: 0;
-  right: 0;
   width: 100%;
-  z-index: 999; /* 다른 요소 위에 뜨게 */
+  z-index: 999;
   display: flex;
-  justify-content: space-between;
+  justify-content: space-between; /* 핵심 */
   align-items: center;
   padding: 12px 16px;
   background-color: white;
@@ -48,20 +46,18 @@ const Header = ({ setIsNewNote }: NewNote) => {
       borderless: false,
     },
     {
-      image: '/profile.jpg',
+      icon:<Smile size={20}/>,
+      //image: '/profile.jpg',
       tooltip: '프로필',
       borderless: false,
     },
   ];
 
   return (
-    <HeaderWrapper>
-      {/* 왼쪽 버튼 그룹 */}
-      <ButtonGroup buttons={leftButtons} gap="5px" />
-
-      {/* 오른쪽 버튼 그룹 */}
-      <ButtonGroup buttons={rightButtons} gap="17px" />
-    </HeaderWrapper>
+<HeaderWrapper>
+  <ButtonGroup buttons={leftButtons} gap="5px" position="left" />
+  <ButtonGroup buttons={rightButtons} gap="17px" position="right" />
+</HeaderWrapper>
   );
 };
 //현재 문제 : 오른쪽 그룹이 아예 화면 밖으로 나가버림.
