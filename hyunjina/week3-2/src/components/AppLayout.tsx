@@ -1,79 +1,64 @@
-//src / components / AppLayout.tsx;
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import Sidebar from "./Sidebar/Sidebar";
-import { useState } from "react";
 import { Outlet } from "react-router-dom";
+import { breakpoints } from "../styles/theme";
 
 const Layout = styled.div`
   display: flex;
   height: 100vh;
+
+  @media (max-width: ${breakpoints.tablet}) {
+    display: flex;
+  }
 `;
+
+export interface ChatListItem {
+  id: string;
+  title: string;
+  updatedAt: string;
+}
 
 export default function AppLayout() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const toggleSidebar = () => setIsSidebarOpen((v) => !v);
 
+  useEffect(() => {
+    const mq = window.matchMedia(`(max-width: ${breakpoints.tablet})`);
+
+    // 초기 동기화
+    setIsSidebarOpen(!mq.matches);
+
+    const handler = (e: MediaQueryListEvent) => {
+      setIsSidebarOpen(!e.matches);
+    };
+
+    mq.addEventListener("change", handler);
+    return () => mq.removeEventListener("change", handler);
+  }, []);
+
+  const [chatList, setChatList] = useState<ChatListItem[]>(() => {
+    const raw = localStorage.getItem("chat_list");
+    return raw ? JSON.parse(raw) : [];
+  });
+
+  useEffect(() => {
+    localStorage.setItem("chat_list", JSON.stringify(chatList));
+  }, [chatList]);
+
   return (
     <Layout>
       {isSidebarOpen && (
-        <Sidebar toggleSidebar={toggleSidebar} isSidebarOpen={isSidebarOpen} />
+        <Sidebar
+          toggleSidebar={toggleSidebar}
+          isSidebarOpen={isSidebarOpen}
+          chatList={chatList}
+          setChatList={setChatList}
+        />
       )}
-      <Outlet context={{ toggleSidebar, isSidebarOpen }} />
+      <Outlet
+        context={{ toggleSidebar, isSidebarOpen, chatList, setChatList }}
+      />
     </Layout>
   );
 }
-
-// import styled from "styled-components";
-// import Sidebar from "./Sidebar/Sidebar";
-// import { useState } from "react";
-
-// import { chatMessages } from "../data/ChatMessages";
-
-// import type { Message } from "../data/ChatMessages";
-// import { Outlet } from "react-router-dom";
-
-// --------------------------------------------------------------
-
-// const Layout = styled.div`
-//   display: flex;
-//   height: 100vh;
-//   width: 100%;
-
-//   background-color: transparent;
-// `;
-
-// export default function AppLayout() {
-//   const [selectedChatId, setSelectedChatId] = useState<string | null>(null);
-//   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
-
-//   const toggleSidebar = () => setIsSidebarOpen((prev) => !prev);
-
-//   const selectedMessages: Message[] =
-//     selectedChatId && chatMessages[selectedChatId]
-//       ? chatMessages[selectedChatId]
-//       : [];
-
-//   return (
-//     <Layout>
-//       {isSidebarOpen && (
-//         <Sidebar
-//           onSelectChat={setSelectedChatId}
-//           toggleSidebar={toggleSidebar}
-//           isSidebarOpen={isSidebarOpen}
-//         />
-//       )}
-//       <div style={{ flex: 1, display: "flex", flexDirection: "column" }}>
-//         <Outlet
-//           context={{
-//             selectedChatId,
-//             messages: selectedMessages,
-//             toggleSidebar,
-//             isSidebarOpen,
-//           }}
-//         />
-//       </div>
-
-//       {/* <MainArea messages={selectedMessages} toggleSidebar={toggleSidebar} /> */}
-//     </Layout>
-//   );
-// }

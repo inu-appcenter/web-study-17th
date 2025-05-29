@@ -13,10 +13,14 @@ interface ChatListItem {
   updatedAt: string;
 }
 
-export function groupChatsByDate(data: ChatListItem[]) {
+export interface GroupedChat {
+  date: string;
+  chats: ChatListItem[];
+}
+
+export function groupChatsByDate(data: ChatListItem[]): GroupedChat[] {
   const today = new Date();
   const groups: Record<string, ChatListItem[]> = {};
-
   data.forEach((chat) => {
     const date = parseISO(chat.updatedAt);
     let key: string;
@@ -44,7 +48,7 @@ export function groupChatsByDate(data: ChatListItem[]) {
     groups[key].push(chat);
   });
 
-  return groups;
+  return Object.entries(groups).map(([date, chats]) => ({ date, chats }));
 }
 
 // parseISO, isToday, isThisWeek, format: date-fns 사용한 라이브러러리들

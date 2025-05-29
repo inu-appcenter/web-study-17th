@@ -1,5 +1,3 @@
-// NavSection.tsx
-import React from "react";
 import styled from "styled-components";
 import { LucideIcon } from "lucide-react";
 
@@ -41,13 +39,13 @@ const ImgIcon = styled.img`
 
 export interface NavItem {
   label: string;
-  icon?: string;
+  icon?: LucideIcon;
   imageUrl?: string;
   onClick?: () => void;
 }
 
-interface NavSectionProps {
-  title: string;
+export interface NavSectionProps {
+  title?: string;
   items: NavItem[];
 }
 
@@ -64,4 +62,11 @@ export default function NavSection({ title, items }: NavSectionProps) {
       ))}
     </SectionContainer>
   );
+}
+
+{
+  /* <Button>
+      {Icon && <Icon size={16} color="gray" />}
+      {label && <Label>{label}</Label>}
+    </Button> */
 }

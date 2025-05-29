@@ -1,29 +1,36 @@
-// src/page/ChatPage.tsx
+// src/pages/ChatPage.tsx
 import React, { useState, useRef, useEffect } from "react";
 import styled from "styled-components";
 import { useOutletContext } from "react-router-dom";
 import { PanelLeftDashed } from "lucide-react";
+
 import { generateMultiTurn, ChatTurn } from "../services/geminiService";
 import ChatBubble from "../components/MainArea/ChatBubble";
 import InputArea from "../components/MainArea/InputArea";
 
+//
+// 1) AppLayout에서 내려 주는 컨텍스트 타입 확장
+//
+export interface ChatListItem {
+  id: string;
+  title: string;
+  updatedAt: string;
+}
+
 interface Context {
   toggleSidebar: () => void;
   isSidebarOpen: boolean;
+  chatList: ChatListItem[];
+  setChatList: React.Dispatch<React.SetStateAction<ChatListItem[]>>;
 }
 
+//
+// 2) 스타일 정의 (원본과 동일)
+//
 const MainContainer = styled.div`
-  // flex: 1;
-  // display: flex;
-  // flex-direction: column;
-  // background: transparent;
-  // position: relative;
-
   display: flex;
   flex-direction: column;
-  /* 전체 높이는 상위 flex 레이아웃(MainContent)이 처리하니 생략해도 됩니다 */
-  /* height: 100vh; */
-  background: #ffffff; /* 흰색으로 고정 */
+  background: #ffffff;
   flex: 1;
 `;
 
@@ -36,27 +43,9 @@ const TopBar = styled.div`
   z-index: 1;
 `;
 
-const Mainbtn = styled.button<{ $visible: boolean }>`
-  position: absolute;
-  top: 1rem;
-  left: 1rem;
-  display: ${({ $visible }) => ($visible ? "flex" : "none")};
-  align-items: center;
-  justify-content: center;
-  width: 32px;
-  height: 32px;
-  background: white;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  &:hover {
-    background: #f3f3f3;
-  }
-`;
-
 const ModelSelector = styled.div`
   position: relative;
-  margin: 0 auto;
+  margin-left: 3rem;
 `;
 
 const SelectorButton = styled.button`
@@ -66,23 +55,21 @@ const SelectorButton = styled.button`
   border-radius: 8px;
   font-size: 11px;
   font-weight: 400;
-
   cursor: pointer;
 `;
 
 const Dropdown = styled.ul`
   position: absolute;
-  top: calc(100% + 4px); /* 셀렉터 바로 아래 */
-  left: 0; /* 왼쪽 모서리 딱 붙이기 */
+  top: calc(100% + 4px);
+  left: 0;
   margin: 0;
   padding: 8px 0;
   background: white;
-  border: 1px solid #e0e0e0; /* 연한 회색 테두리 */
-  border-radius: 12px; /* 둥근 모서리 */
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-  min-width: 180px; /* 필요에 따라 조정 */
+  min-width: 180px;
   z-index: 10;
-
   text-align: left;
 `;
 
@@ -95,16 +82,12 @@ const DropdownItem = styled.li<{ isLabel?: boolean; isSelected?: boolean }>`
     isLabel ? "#888" : isSelected ? "#111" : "#333"};
   background: ${({ isSelected }) => (isSelected ? "#f5f5f5" : "transparent")};
   cursor: ${({ isLabel }) => (isLabel ? "default" : "pointer")};
-
   &:hover {
     background: ${({ isLabel }) => (isLabel ? "transparent" : "#fafafa")};
     border-radius: 13px;
     background-color: rgb(246, 246, 246);
   }
-
-  margin-left: 0.2rem;
-  margin-right: 0.2rem;
-  margin-bottom: 0.1rem;
+  margin: 0.1rem 0.2rem;
 `;
 
 const ItemDescription = styled.span`
@@ -129,12 +112,14 @@ const NoChatWrapper = styled.div`
   flex: 1;
   display: flex;
   flex-direction: column;
-  align-items: center; /* 가로 중앙 정렬 */
-  justify-content: center; /* 세로 중앙 정렬 */
-  gap: 1.5rem; /* 텍스트와 입력창 사이 여백 */
+  align-items: center; /* 가로 중앙 */
+  justify-content: center; /* 세로 중앙 */
+  gap: 1.5rem;
 `;
 
-// — 모델 옵션 정의 —
+//
+// 3) 모델 옵션 (원본과 동일)
+//
 const modelOptions = [
   { id: "label", label: "모델" },
   { id: "gpt4o", label: "GPT-4o", description: "대부분의 업무에 탁월함" },
@@ -143,10 +128,15 @@ const modelOptions = [
   { id: "more", label: "더 많은 모델" },
 ];
 
+//
+// 4) 실제 컴포넌트
+//
 export default function ChatPage() {
-  const { toggleSidebar, isSidebarOpen } = useOutletContext<Context>();
+  // ✔️ 기존 토글 컨텍스트 + 새로 추가된 chatList 컨텍스트
+  const { toggleSidebar, isSidebarOpen, chatList, setChatList } =
+    useOutletContext<Context>();
 
-  // 드롭다운 열림 상태 & 바깥 클릭으로 닫기 처리
+  // 드롭다운 제어
   const [dropOpen, setDropOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
   useEffect(() => {
@@ -159,17 +149,26 @@ export default function ChatPage() {
     return () => document.removeEventListener("click", onClickOutside);
   }, []);
 
-  // 대화 기록 및 로딩 상태
+  // 메시지 히스토리 + 로딩
   const [history, setHistory] = useState<ChatTurn[]>([
     { role: "system", text: "오늘은 무슨 생각을 하고 계신가요?" },
   ]);
   const [loading, setLoading] = useState(false);
 
-  // 메시지 전송 핸들러
+  // — 첫 메시지 전송 시 자동으로 새 세션 생성 —
   const handleSend = async (msg: string) => {
-    const updated = [...history, { role: "user", text: msg }];
+    if (history.length === 1) {
+      const id = Date.now().toString();
+      setChatList([
+        { id, title: msg, updatedAt: new Date().toISOString() },
+        ...chatList,
+      ]);
+    }
+
+    const updated: ChatTurn[] = [...history, { role: "user", text: msg }];
     setHistory(updated);
     setLoading(true);
+
     try {
       let raw = await generateMultiTurn(updated);
       raw = raw.replace(/^Assistant:\s*/i, "");
@@ -187,15 +186,21 @@ export default function ChatPage() {
   return (
     <MainContainer>
       <TopBar>
-        <Mainbtn onClick={toggleSidebar} $visible={!isSidebarOpen}>
-          <PanelLeftDashed size={16} />
-        </Mainbtn>
+        {/* 토글 버튼: 사이드바 닫혀있을 때만 보여 주기 */}
+        {!isSidebarOpen && (
+          <PanelLeftDashed
+            size={16}
+            color="currentColor"
+            strokeWidth={2}
+            onClick={toggleSidebar}
+          />
+        )}
 
+        {/* 모델 선택 드롭다운 */}
         <ModelSelector ref={ref}>
           <SelectorButton onClick={() => setDropOpen((v) => !v)}>
             {modelOptions[1].label} v
           </SelectorButton>
-
           {dropOpen && (
             <Dropdown>
               {modelOptions.map((opt) => (
@@ -218,6 +223,7 @@ export default function ChatPage() {
         </ModelSelector>
       </TopBar>
 
+      {/* 첫 대화일 때 환영 화면 */}
       {convo.length === 0 ? (
         <NoChatWrapper>
           <Welcome>{history[0].text}</Welcome>
@@ -225,6 +231,7 @@ export default function ChatPage() {
         </NoChatWrapper>
       ) : (
         <>
+          {/* 실제 채팅 뷰 */}
           <ChatContainer>
             {convo.map((turn, i) => (
               <ChatBubble
@@ -233,8 +240,10 @@ export default function ChatPage() {
                 content={turn.text}
               />
             ))}
-            {loading && <div style={{ margin: 16, color: "#888" }}></div>}
+            {loading && <div style={{ margin: 16, color: "#888" }} />}
           </ChatContainer>
+
+          {/* 입력창 */}
           <InputArea onSend={handleSend} disabled={loading} />
         </>
       )}

@@ -7,8 +7,6 @@ const HeaderWrapper = styled.div`
   align-items: center;
   padding: 0.15rem;
 
-  // background: red;
-
   color: black;
 `;
 
@@ -56,11 +54,11 @@ const IconButton = styled.button`
   transition: background-color 0.2s ease;
 
   &:hover {
-    background-color: rgba(150, 149, 149, 0.1); /* 눈에 잘 띄는 투명도 */
+    background-color: rgba(150, 149, 149, 0.1);
   }
 
   & > svg {
-    display: block; /* inline-svg의 여백 제거 */
+    display: block;
   }
 `;
 

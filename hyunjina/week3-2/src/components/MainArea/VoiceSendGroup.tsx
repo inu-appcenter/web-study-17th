@@ -19,13 +19,24 @@ const IconButton = styled.button`
   }
 `;
 
-export default function VoiceSendGroup({ onSend }) {
+export interface VoiceSendGroupProps {
+  onSend: () => void;
+  disabled?: boolean;
+}
+
+export default function VoiceSendGroup({
+  onSend,
+  disabled,
+}: {
+  onSend: () => void;
+  disabled?: boolean;
+}) {
   return (
     <ButtonGroup>
-      <IconButton title="음성 입력">
+      <IconButton title="음성 입력" disabled={disabled}>
         <Mic size={16} />
       </IconButton>
-      <IconButton title="보내기">
+      <IconButton title="보내기" onClick={onSend} disabled={disabled}>
         <AudioLines size={16} />
       </IconButton>
     </ButtonGroup>

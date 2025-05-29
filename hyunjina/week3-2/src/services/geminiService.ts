@@ -30,9 +30,6 @@ export async function generateMultiTurn(history: ChatTurn[]): Promise<string> {
         parts: [{ text: prompt }],
       },
     ],
-    // (선택) 후보 개수나 maxOutputTokens 도 추가 설정할 수 있습니다.
-    // candidateCount: 1,
-    // maxOutputTokens: 256
   };
 
   const res = await fetch(url, {

@@ -1,12 +1,9 @@
-// src/components/MainArea/Header.tsx
-// import React from "react";
 import styled from "styled-components";
 import { PanelLeftDashed, ChevronDown } from "lucide-react";
 import { useOutletContext } from "react-router-dom";
 
 interface OutletContextType {
   toggleSidebar: () => void;
-  // isSidebarOpen는 여기서 사용하지 않으니 빼줍니다
 }
 
 const HeaderContainer = styled.div`
@@ -46,7 +43,6 @@ const Title = styled.h1`
 `;
 
 export default function Header() {
-  // isSidebarOpen 제거!
   const { toggleSidebar } = useOutletContext<OutletContextType>();
 
   return (
@@ -64,41 +60,3 @@ export default function Header() {
     </HeaderContainer>
   );
 }
-
-// // 공유하기 버튼(sidebar없을때만 렌더링)
-
-// import styled from "styled-components";
-// import { Share2 } from "lucide-react";
-
-// const HeaderContainer = styled.div`
-//   display: flex;
-//   justify-content: space-between;
-//   align-items: center;
-//   padding: 1rem 1.5rem;
-// `;
-
-// const ShareButton = styled.button`
-//   background: none;
-//   border: none;
-//   color: black;
-//   display: flex;
-//   align-items: center;
-//   gap: 0.4rem;
-//   font-size: 14px;
-//   cursor: pointer;
-
-//   &:hover {
-//     opacity: 0.8;
-//   }
-// `;
-
-// export default function Header() {
-//   return (
-//     <HeaderContainer>
-//       {/* <ShareButton>
-//         <Share2 size={16} />
-//         공유하기
-//       </ShareButton> */}
-//     </HeaderContainer>
-//   );
-// }
