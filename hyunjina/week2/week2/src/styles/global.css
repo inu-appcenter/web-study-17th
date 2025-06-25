@@ -1,0 +1,72 @@
+body {
+  margin: 0;
+  margin-left: 35px;
+  font-family: "Arial", sans-serif;
+  background-color: #f7f9fc;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 32px;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  padding: 16px 32px;
+  border-bottom: 1px solid #ccc;
+  font-size: 1.5rem;
+  font-weight: bold;
+  background-color: white;
+}
+
+.header span {
+  margin-left: 16px;
+}
+
+.main-content {
+  display: flex;
+  justify-content: space-between;
+  gap: 48px;
+  margin-top: 32px;
+}
+
+.results,
+.recommendations {
+  flex: 1;
+}
+
+.recommendations {
+  background-color: white;
+  padding: 24px;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.recommendations h2 {
+  font-size: 1.3rem;
+  margin-bottom: 12px;
+}
+
+.recommendations ul {
+  list-style: disc;
+  padding-left: 20px;
+}
+
+.recommendations li {
+  margin-bottom: 8px;
+}
+
+.main-content {
+  display: flex;
+  justify-content: space-between;
+  padding: 20px;
+  gap: 40px;
+}
+.results-section {
+  flex: 2;
+}
+.recommend-section {
+  flex: 1;
+}
